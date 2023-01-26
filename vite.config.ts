@@ -3,7 +3,6 @@ import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 import * as tsconfig from './tsconfig.json';
 
-// @src: https://github.com/Melvin-Abraham/Google-Assistant-Unofficial-Desktop-Client/blob/next/vite.config.ts#L9
 // Resolve path aliases from `tsconfig.json`
 const tsconfigAliases = tsconfig.compilerOptions.paths;
 const aliasOptions: AliasOptions = {};
