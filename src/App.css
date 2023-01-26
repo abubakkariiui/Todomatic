@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+:root {
+  --color-bg: #121212;
+  --color-fg: #ffffff;
+  --color-accent: #2279db;
+  --color-on-accent: #ffffff;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: "Space Mono", "Segoe UI", "Ubuntu", "Source Sans Pro",
+    "monospace";
+  box-sizing: border-box;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+main {
+  --vertical-margin: 1.5em;
+
+  margin-top: var(--vertical-margin);
+  margin-bottom: var(--vertical-margin);
+}
+.persistent-header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  z-index: 2;
+}
