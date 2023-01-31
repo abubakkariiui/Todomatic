@@ -8,33 +8,24 @@ import useTodo from "../../hooks/useTodo";
 
 interface TodoListItemProps {
   todoItem: TodoItem;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
-function TodoListItem({ todoItem }: TodoListItemProps) {
+function TodoListItem({ todoItem, onDelete, onEdit }: TodoListItemProps) {
   const { dispatch } = useTodo();
   const todoListItemActions: TodoListItemActionButtonProps[] = [
     {
       title: "Edit Item",
       ariaLabel: `Edit Item "${todoItem.todo}"`,
       Icon: <EditIcon />,
-      onClick: () =>
-        dispatch({
-          type: "edit",
-          payload: {
-            id: todoItem.id,
-            todo: prompt("Edit todo item", todoItem.todo) || todoItem.todo,
-          },
-        }),
+      onClick: onEdit,
     },
     {
       title: "Delete Item",
       ariaLabel: `Delete Item "${todoItem.todo}"`,
       Icon: <TrashIcon />,
-      onClick: () =>
-        dispatch({
-          type: "remove",
-          payload: todoItem.id,
-        }),
+      onClick: onDelete,
     },
   ];
 

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import TodoListItem from "components/TodoListItem/TodoListItem";
+import RenameModal from "components/RenameModal/RenameModal";
 import { TodoItem } from "utils/types";
 import "./TodoList.css";
 import { FilterOption } from "components/TabGroup/TabGroup";
+import useTodo from "hooks/useTodo";
 
 interface TodoListProps {
   todoList: TodoItem[];
@@ -10,6 +12,10 @@ interface TodoListProps {
 }
 
 function TodoList({ todoList, filterBy }: TodoListProps) {
+  const [editTodoItem, setEditTodoItem] = useState<TodoItem | undefined>(
+    undefined
+  );
+  const { dispatch } = useTodo();
   const filteredTodoList = todoList.filter((todoItem) => {
     switch (filterBy) {
       case "pending":
@@ -22,12 +28,46 @@ function TodoList({ todoList, filterBy }: TodoListProps) {
         return true;
     }
   });
+
+  const onRename = (newName: string) => {
+    if (editTodoItem === undefined) return;
+
+    dispatch({
+      type: "edit",
+      payload: {
+        id: editTodoItem.id,
+        todo: newName,
+      },
+    });
+
+    // Reset todo item for editing. This will hide the
+    // rename modal
+    setEditTodoItem(undefined);
+  };
   return (
-    <ul className="todo-list-root">
-      {filteredTodoList.map((todoItem) => (
-        <TodoListItem key={todoItem.id} todoItem={todoItem} />
-      ))}
-    </ul>
+    <>
+      <ul className="todo-list-root">
+        {filteredTodoList.map((todoItem) => (
+          <TodoListItem
+            key={todoItem.id}
+            todoItem={todoItem}
+            onEdit={() => setEditTodoItem(todoItem)}
+            onDelete={() =>
+              dispatch({
+                type: "remove",
+                payload: todoItem.id,
+              })
+            }
+          />
+        ))}
+      </ul>
+
+      <RenameModal
+        todoItem={editTodoItem}
+        onRename={onRename}
+        onCancel={() => setEditTodoItem(undefined)}
+      />
+    </>
   );
 }
 
