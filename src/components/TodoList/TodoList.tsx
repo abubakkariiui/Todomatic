@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TodoListItem from "components/TodoListItem/TodoListItem";
 import RenameModal from "components/RenameModal/RenameModal";
+import TodoListEmptyState from "components/TodoList/TodoListEmptyState";
 import { TodoItem } from "utils/types";
 import "./TodoList.css";
 import { FilterOption } from "components/TabGroup/TabGroup";
@@ -44,6 +45,10 @@ function TodoList({ todoList, filterBy }: TodoListProps) {
     // rename modal
     setEditTodoItem(undefined);
   };
+
+  if (filteredTodoList.length === 0) {
+    return <TodoListEmptyState filterOption={filterBy} />;
+  }
   return (
     <>
       <ul className="todo-list-root">
@@ -55,6 +60,12 @@ function TodoList({ todoList, filterBy }: TodoListProps) {
             onDelete={() =>
               dispatch({
                 type: "remove",
+                payload: todoItem.id,
+              })
+            }
+            onToggleCompletion={() =>
+              dispatch({
+                type: "toggleCompletion",
                 payload: todoItem.id,
               })
             }

@@ -3,6 +3,8 @@ import { EditIcon, TrashIcon } from "@iconicicons/react";
 import TodoListItemActionButton, {
   TodoListItemActionButtonProps,
 } from "./TodoListItemActionButton";
+import { motion } from "framer-motion";
+
 import "./TodoListItem.css";
 import useTodo from "../../hooks/useTodo";
 
@@ -10,9 +12,15 @@ interface TodoListItemProps {
   todoItem: TodoItem;
   onEdit: () => void;
   onDelete: () => void;
+  onToggleCompletion: () => void;
 }
 
-function TodoListItem({ todoItem, onDelete, onEdit }: TodoListItemProps) {
+function TodoListItem({
+  todoItem,
+  onDelete,
+  onEdit,
+  onToggleCompletion,
+}: TodoListItemProps) {
   const { dispatch } = useTodo();
   const todoListItemActions: TodoListItemActionButtonProps[] = [
     {
@@ -29,17 +37,22 @@ function TodoListItem({ todoItem, onDelete, onEdit }: TodoListItemProps) {
     },
   ];
 
-  const onToogleCompletion = () =>
-    dispatch({
-      type: "toggleCompletion",
-      payload: todoItem.id,
-    });
-
   return (
-    <li className="todo-list-item-root" data-completed={todoItem.complete}>
+    <motion.li
+      className="todo-list-item-root"
+      data-completed={todoItem.complete}
+      layout
+      animate={{
+        y: [30, 0],
+        transition: {
+          duration: 0.3,
+          ease: "easeOut",
+        },
+      }}
+    >
       <div
         className="todo-list-item-click-target"
-        onClick={onToogleCompletion}
+        onClick={onToggleCompletion}
       />
       <div className="todo-list-item-primary-content">
         <input
@@ -49,7 +62,7 @@ function TodoListItem({ todoItem, onDelete, onEdit }: TodoListItemProps) {
           title={`Mark item "${todoItem.todo}" as ${
             todoItem.complete ? "pending" : "completed"
           }`}
-          onChange={onToogleCompletion}
+          onChange={onToggleCompletion}
         />
 
         <label
@@ -71,7 +84,7 @@ function TodoListItem({ todoItem, onDelete, onEdit }: TodoListItemProps) {
           />
         ))}
       </div>
-    </li>
+    </motion.li>
   );
 }
 
